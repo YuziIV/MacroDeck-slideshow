@@ -4,13 +4,21 @@ Macro Deck 3 plugin that displays random pictures from a folder on a button. Ima
 
 ## Use
 
-Install the plugin in Macro Deck 3. Macro Deck starts and authorizes it. Add the **Slideshow** action to a button and enter an image folder path **on the computer running Macro Deck**. Set **Seconds between images** (1–3600, default 10) and **Image size in pixels** (64–1024, default 512). These are per-button settings, so different slideshow buttons can have different speeds and sizes. Subfolders are included; PNG, JPEG and WebP files are supported. Install `ffmpeg` on that computer and ensure it is on `PATH` so the plugin can render button icons. The selected folder must be readable by Macro Deck. An empty or missing folder produces no image.
+Install the plugin from the Macro Deck Store in the **Macro Deck desktop app**; Macro Deck starts and authorizes it. To set up a slideshow button:
+
+1. Install `ffmpeg` **on the computer running Macro Deck** and make sure it is available on `PATH`.
+2. Edit an **Action Button** in Macro Deck. Add the **Slideshow** action and enter the path to a folder of pictures **on that same computer**.
+3. Set **Seconds between images** (1–3600, default 10) and **Image size in pixels** (64–1024, default 512). Each button can use different settings.
+4. **Enable the Slideshow action as the button's symbol/icon provider.** In the Action Button editor, use the symbol-provider control at the **top right of the Slideshow action**. Without this, the action can skip images when pressed but the slideshow pictures will **not appear on the button**.
+5. Save the button. Its image changes at your chosen interval; pressing it skips to the next picture.
+
+Subfolders are included; PNG, JPEG and WebP files are supported. The selected folder must be readable by Macro Deck. An empty or missing folder produces no image.
 
 The plugin reads images in the chosen local folder and invokes local `ffmpeg` to convert them to button icons. It does not upload images or connect to external services. No account or token is needed for an installed plugin.
 
 The plugin's icon and documentation were created with AI assistance. The running plugin does not use AI or generate AI content; it displays images you select.
 
-To test before publishing, start Macro Deck, create a one-time token under **Developer Tools → Plugin tokens**, save it as `MacroDeck:Plugin:EnrollmentToken` in the **source project's .NET User Secrets**, and run the **Macro Deck - Real Host** debug profile in `src/ReviewedImageSlideshow/Properties/launchSettings.json`. Remove the token from User Secrets after pairing; subsequent debug launches reuse the ignored `.macrodeck-dev-state/`. Add two slideshow buttons with different folders, intervals and sizes. Verify each changes at its own interval, and pressing a button skips its image. Test an invalid folder and remove `ffmpeg` from `PATH` to confirm icons are unavailable rather than crashing the host. Store installations need no developer enrollment token.
+To test from source before publishing, start Macro Deck, create a one-time token under **Developer Tools → Plugin tokens**, save it as `MacroDeck:Plugin:EnrollmentToken` in the **source project's .NET User Secrets**, and run the **Macro Deck - Real Host** debug profile in `src/ReviewedImageSlideshow/Properties/launchSettings.json`. Remove the token from User Secrets after pairing; subsequent debug launches reuse the ignored `.macrodeck-dev-state/`. Add two slideshow buttons, enable the symbol provider for both, and try different folders, intervals and sizes. Store installations need no developer enrollment token.
 
 ## Build and publish
 
