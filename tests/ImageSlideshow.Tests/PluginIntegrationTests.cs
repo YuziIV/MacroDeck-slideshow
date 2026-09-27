@@ -1,7 +1,8 @@
 using MacroDeck.Plugin.Testing;
 using NUnit.Framework;
+using SkiaSharp;
 
-namespace ReviewedImageSlideshow.Tests;
+namespace ImageSlideshow.Tests;
 
 /// <summary>
 /// Behaviour tests through <see cref="PluginTestHarness"/>: the plugin's own capability handlers run,
@@ -34,11 +35,11 @@ public sealed class PluginIntegrationTests
 		{
 			File.WriteAllBytes(Path.Combine(folder, "example.png"), [0x89]);
 			var outcome = await harness.Actions.ExecuteAsync(
-				"reviewed-image-slideshow",
+				"image-slideshow",
 				new Dictionary<string, object?> { ["folder"] = folder, ["intervalSeconds"] = 5d, ["imageSize"] = 256d });
 			Assert.That(outcome.Succeeded, Is.True);
 
-			var action = new ReviewedImageSlideshowAction();
+			var action = new ImageSlideshowAction();
 			var first = await action.GetActionIconAsync(new Dictionary<string, object?>
 				{ ["folder"] = folder, ["intervalSeconds"] = 5d, ["imageSize"] = 256d }, CancellationToken.None);
 			var repeat = await action.GetActionIconAsync(new Dictionary<string, object?>
@@ -61,10 +62,50 @@ public sealed class PluginIntegrationTests
 		await harness.InitializeIntegrationsAsync();
 
 		var outcome = await harness.Actions.ExecuteAsync(
-			"reviewed-image-slideshow",
+			"image-slideshow",
 			new Dictionary<string, object?> { ["folder"] = "   " });
 
 		Assert.That(outcome.Succeeded, Is.False);
+	}
+
+	[Test]
+	public async Task A_real_image_is_rendered_without_an_external_converter()
+	{
+		var folder = Path.Combine(Path.GetTempPath(), $"slideshow-render-{Guid.NewGuid():N}");
+		Directory.CreateDirectory(folder);
+		try
+		{
+			var file = Path.Combine(folder, "wide.png");
+			using (var surface = SKSurface.Create(new SKImageInfo(200, 100)))
+			{
+				surface.Canvas.Clear(SKColors.CornflowerBlue);
+				using var image = surface.Snapshot();
+				using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+				using var output = File.Create(file);
+				data.SaveTo(output);
+			}
+
+			var action = new ImageSlideshowAction();
+			var parameters = new Dictionary<string, object?>
+			{
+				["folder"] = folder, ["intervalSeconds"] = 10, ["imageSize"] = 128
+			};
+			var snapshot = await action.GetActionIconAsync(parameters, CancellationToken.None);
+			Assert.That(snapshot, Is.Not.Null);
+			var content = await action.GetActionIconContentAsync(parameters, snapshot!.Version, CancellationToken.None);
+			Assert.That(content, Is.Not.Null);
+			using var rendered = SKBitmap.Decode(content!.Data);
+			Assert.That(rendered, Is.Not.Null);
+			Assert.Multiple(() =>
+			{
+				Assert.That(rendered!.Width, Is.EqualTo(128));
+				Assert.That(rendered.Height, Is.EqualTo(128));
+			});
+		}
+		finally
+		{
+			Directory.Delete(folder, recursive: true);
+		}
 	}
 
 	[TestCase(0, 512)]
@@ -76,7 +117,7 @@ public sealed class PluginIntegrationTests
 	{
 		await using var harness = CreateHarness();
 		await harness.InitializeIntegrationsAsync();
-		var outcome = await harness.Actions.ExecuteAsync("reviewed-image-slideshow",
+		var outcome = await harness.Actions.ExecuteAsync("image-slideshow",
 			new Dictionary<string, object?>
 			{
 				["folder"] = Path.GetTempPath(), ["intervalSeconds"] = interval, ["imageSize"] = size
@@ -108,7 +149,7 @@ public sealed class LocalizationTests
 	[Test]
 	public void The_action_strings_come_from_the_catalog()
 	{
-		Assert.That(Strings.LocalizationCatalog.KeysOf("en"), Does.Contain("Actions.ReviewedImageSlideshow.Name"));
+		Assert.That(Strings.LocalizationCatalog.KeysOf("en"), Does.Contain("Actions.ImageSlideshow.Name"));
 	}
 
 	[Test]

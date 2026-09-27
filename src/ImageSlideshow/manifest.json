@@ -2,27 +2,27 @@
   "$schema": "https://schemas.macro-deck.app/plugin-manifest-v1.schema.json",
   "manifestVersion": 1,
   "id": "com.yussefabdelwahab.image-slideshow",
-  "name": "Slideshow",
-  "version": "1.0.1",
+  "name": "Image Slideshow",
+  "version": "1.0.3",
   "description": "Displays images from a chosen folder on a Macro Deck button, changing at a configured interval or on press.",
   "icon": "Assets/icon.svg",
   "entrypoints": {
     "win-x64": {
-      "executable": "runtimes/win-x64/ReviewedImageSlideshow.dll",
+      "executable": "runtimes/win-x64/ImageSlideshow.dll",
       "runtime": {
         "kind": "FrameworkDependent",
         "dotnetVersion": "10.0"
       }
     },
     "osx-arm64": {
-      "executable": "runtimes/osx-arm64/ReviewedImageSlideshow.dll",
+      "executable": "runtimes/osx-arm64/ImageSlideshow.dll",
       "runtime": {
         "kind": "FrameworkDependent",
         "dotnetVersion": "10.0"
       }
     },
     "linux-x64": {
-      "executable": "runtimes/linux-x64/ReviewedImageSlideshow.dll",
+      "executable": "runtimes/linux-x64/ImageSlideshow.dll",
       "runtime": {
         "kind": "FrameworkDependent",
         "dotnetVersion": "10.0"

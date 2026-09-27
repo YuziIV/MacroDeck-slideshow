@@ -5,10 +5,10 @@
         <!-- Pinned rather than taken from the project file name: manifest.json declares this executable
              name, and the generated Strings class lives in this namespace, so renaming the .csproj later
              must neither rename the built executable nor move Strings out from under the code. -->
-        <AssemblyName>ReviewedImageSlideshow</AssemblyName>
-        <RootNamespace>ReviewedImageSlideshow</RootNamespace>
+        <AssemblyName>ImageSlideshow</AssemblyName>
+        <RootNamespace>ImageSlideshow</RootNamespace>
         <IsPackable>false</IsPackable>
-        <UserSecretsId>ReviewedImageSlideshow-PluginDevelopment</UserSecretsId>
+        <UserSecretsId>ImageSlideshow-PluginDevelopment</UserSecretsId>
     </PropertyGroup>
 
     <!-- Microsoft.NET.Sdk plus this framework reference, not Microsoft.NET.Sdk.Web: a plugin is a
@@ -29,6 +29,8 @@
         <PackageReference Include="MacroDeck.Plugin.Hosting" />
         <PackageReference Include="MacroDeck.Plugin.Serilog" />
         <PackageReference Include="MacroDeck.Sdk" />
+        <PackageReference Include="SkiaSharp" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
     </ItemGroup>
 
     <!-- The SDK reads the manifest from the content root at startup and resolves the icon path against

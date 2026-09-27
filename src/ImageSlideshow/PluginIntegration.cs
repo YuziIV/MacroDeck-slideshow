@@ -2,7 +2,7 @@ using MacroDeck.Sdk;
 using MacroDeck.Sdk.Actions;
 using Serilog;
 
-namespace ReviewedImageSlideshow;
+namespace ImageSlideshow;
 
 /// <summary>
 /// The plugin's one integration. It declares a single example action: add more to <see cref="Actions"/>,
@@ -18,7 +18,7 @@ public sealed class PluginIntegration : IPluginIntegration
 	public PluginIntegration(ILogger logger)
 	{
 		_logger = logger.ForContext<PluginIntegration>();
-		Actions = [new ReviewedImageSlideshowAction()];
+		Actions = [new ImageSlideshowAction()];
 	}
 
 	public IReadOnlyList<IActionDefinition> Actions { get; }

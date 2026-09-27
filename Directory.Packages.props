@@ -14,6 +14,8 @@
         <PackageVersion Include="MacroDeck.Plugin.Serilog" Version="$(MacroDeckSdkVersion)" />
         <PackageVersion Include="MacroDeck.Plugin.Testing" Version="$(MacroDeckSdkVersion)" />
         <PackageVersion Include="MacroDeck.Sdk" Version="$(MacroDeckSdkVersion)" />
+        <PackageVersion Include="SkiaSharp" Version="4.152.1" />
+        <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.152.1" />
     </ItemGroup>
 
     <ItemGroup>

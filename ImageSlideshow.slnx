@@ -6,9 +6,9 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/ReviewedImageSlideshow/ReviewedImageSlideshow.csproj" />
+    <Project Path="src/ImageSlideshow/ImageSlideshow.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/ReviewedImageSlideshow.Tests/ReviewedImageSlideshow.Tests.csproj" />
+    <Project Path="tests/ImageSlideshow.Tests/ImageSlideshow.Tests.csproj" />
   </Folder>
 </Solution>

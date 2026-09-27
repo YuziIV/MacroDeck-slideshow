@@ -1,13 +1,12 @@
 using MacroDeck.Localization;
 using MacroDeck.Sdk;
 using MacroDeck.Sdk.Actions;
-using System.Diagnostics;
 using System.Globalization;
-using System.ComponentModel;
+using SkiaSharp;
 
-namespace ReviewedImageSlideshow;
+namespace ImageSlideshow;
 
-public sealed class ReviewedImageSlideshowAction : IActionDefinition, IIconProviderActionDefinition
+public sealed class ImageSlideshowAction : IActionDefinition, IIconProviderActionDefinition
 {
     private const string FolderParameter = "folder";
     private const string IntervalParameter = "intervalSeconds";
@@ -23,20 +22,20 @@ public sealed class ReviewedImageSlideshowAction : IActionDefinition, IIconProvi
         public DateTimeOffset NextChange { get; set; }
     }
 
-    public string Id => "reviewed-image-slideshow";
-    public LocalizedText Name => Strings.Actions.ReviewedImageSlideshow.Name();
-    public LocalizedText Description => Strings.Actions.ReviewedImageSlideshow.Description();
+    public string Id => "image-slideshow";
+    public LocalizedText Name => Strings.Actions.ImageSlideshow.Name();
+    public LocalizedText Description => Strings.Actions.ImageSlideshow.Description();
     public IReadOnlyList<ActionParameter> Parameters { get; } =
     [
         ActionParameter.Text(FolderParameter,
-            label: Strings.Actions.ReviewedImageSlideshow.Folder.Label(),
-            description: Strings.Actions.ReviewedImageSlideshow.Folder.Description(),
-            placeholder: Strings.Actions.ReviewedImageSlideshow.Folder.Placeholder(),
+            label: Strings.Actions.ImageSlideshow.Folder.Label(),
+            description: Strings.Actions.ImageSlideshow.Folder.Description(),
+            placeholder: Strings.Actions.ImageSlideshow.Folder.Placeholder(),
             required: true),
         ActionParameter.Number(IntervalParameter,
-            label: Strings.Actions.ReviewedImageSlideshow.Interval.Label(), defaultValue: 10),
+            label: Strings.Actions.ImageSlideshow.Interval.Label(), defaultValue: 10),
         ActionParameter.Number(SizeParameter,
-            label: Strings.Actions.ReviewedImageSlideshow.Size.Label(), defaultValue: 512),
+            label: Strings.Actions.ImageSlideshow.Size.Label(), defaultValue: 512),
     ];
 
     public MacroDeckPlatform Platforms => MacroDeckPlatform.All;
@@ -138,7 +137,7 @@ public sealed class ReviewedImageSlideshowAction : IActionDefinition, IIconProvi
         }
     }
 
-    public async Task<ActionIconContent?> GetActionIconContentAsync(
+    public Task<ActionIconContent?> GetActionIconContentAsync(
         IReadOnlyDictionary<string, object?> parameters,
         string version,
         CancellationToken cancellationToken)
@@ -158,33 +157,38 @@ public sealed class ReviewedImageSlideshowAction : IActionDefinition, IIconProvi
 
         if (path is null || !File.Exists(path))
         {
-            return null;
+            return Task.FromResult<ActionIconContent?>(null);
         }
 
         try
         {
-            using var process = Process.Start(new ProcessStartInfo("ffmpeg")
-            {
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                ArgumentList =
-                {
-                    "-v", "error", "-i", path,
-                    "-vf", $"scale={size}:{size}:force_original_aspect_ratio=increase:flags=bicubic,crop={size}:{size}",
-                    "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "pipe:1"
-                }
-            });
-            if (process is null) return null;
+            cancellationToken.ThrowIfCancellationRequested();
+            using var source = SKBitmap.Decode(path);
+            if (source is null || source.Width == 0 || source.Height == 0)
+                return Task.FromResult<ActionIconContent?>(null);
 
-            await using var image = new MemoryStream();
-            await process.StandardOutput.BaseStream.CopyToAsync(image, cancellationToken);
-            await process.WaitForExitAsync(cancellationToken);
-            return process.ExitCode == 0 ? new ActionIconContent(image.ToArray(), "image/png") : null;
+            using var surface = SKSurface.Create(new SKImageInfo(size, size));
+            if (surface is null) return Task.FromResult<ActionIconContent?>(null);
+
+            var crop = Math.Min(source.Width, source.Height);
+            var sourceRect = new SKRect(
+                (source.Width - crop) / 2f, (source.Height - crop) / 2f,
+                (source.Width + crop) / 2f, (source.Height + crop) / 2f);
+            using var paint = new SKPaint { IsAntialias = true };
+            surface.Canvas.Clear(SKColors.Transparent);
+            surface.Canvas.DrawBitmap(source, sourceRect, new SKRect(0, 0, size, size),
+                new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear), paint);
+            using var rendered = surface.Snapshot();
+            using var data = rendered.Encode(SKEncodedImageFormat.Png, 100);
+            return Task.FromResult<ActionIconContent?>(new ActionIconContent(data.ToArray(), "image/png"));
         }
-        catch (Win32Exception)
+        catch (IOException)
         {
-            return null;
+            return Task.FromResult<ActionIconContent?>(null);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Task.FromResult<ActionIconContent?>(null);
         }
     }
 
@@ -217,14 +221,14 @@ public sealed class ReviewedImageSlideshowAction : IActionDefinition, IIconProvi
     private static bool IsSupportedImage(string path) =>
         Path.GetExtension(path).ToLowerInvariant() is ".png" or ".jpg" or ".jpeg" or ".webp";
 
-    private sealed class Executor(ReviewedImageSlideshowAction action) : IActionExecutor
+    private sealed class Executor(ImageSlideshowAction action) : IActionExecutor
     {
         public Task<ActionResult> ExecuteAsync(ActionExecutionContext context)
         {
             return action.Skip(context.Parameters)
                 ? ActionResult.SucceededTask
                 : Task.FromResult(ActionResult.Failed(ActionErrorCodes.InvalidParameter,
-                    Strings.Actions.ReviewedImageSlideshow.InvalidSettings()));
+                    Strings.Actions.ImageSlideshow.InvalidSettings()));
         }
     }
 }

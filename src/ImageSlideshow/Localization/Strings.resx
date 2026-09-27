@@ -16,31 +16,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Actions.ReviewedImageSlideshow.Name" xml:space="preserve">
-    <value>Slideshow</value>
+  <data name="Actions.ImageSlideshow.Name" xml:space="preserve">
+    <value>Image Slideshow</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.Description" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.Description" xml:space="preserve">
     <value>Shows a random image, changes it at the chosen interval, and skips on press.</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.Interval.Label" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.Interval.Label" xml:space="preserve">
     <value>Seconds between images (1-3600)</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.Size.Label" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.Size.Label" xml:space="preserve">
     <value>Image size in pixels (64-1024)</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.InvalidSettings" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.InvalidSettings" xml:space="preserve">
     <value>Choose an existing image folder, a whole-number interval from 1 to 3600 seconds and a size from 64 to 1024 pixels.</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.Folder.Label" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.Folder.Label" xml:space="preserve">
     <value>Image folder</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.Folder.Description" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.Folder.Description" xml:space="preserve">
     <value>Images in this folder and its subfolders are included.</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.Folder.Placeholder" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.Folder.Placeholder" xml:space="preserve">
     <value>Select an image folder on the Macro Deck host</value>
   </data>
-  <data name="Actions.ReviewedImageSlideshow.Folder.NotFound" xml:space="preserve">
+  <data name="Actions.ImageSlideshow.Folder.NotFound" xml:space="preserve">
     <value>Choose an existing image folder on the Macro Deck host.</value>
   </data>
 </root>

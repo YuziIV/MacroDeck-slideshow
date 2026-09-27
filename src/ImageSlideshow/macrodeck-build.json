@@ -5,7 +5,7 @@
       "executable": "dotnet",
       "arguments": [
         "publish",
-        "ReviewedImageSlideshow.csproj",
+        "ImageSlideshow.csproj",
         "-c",
         "Release",
         "-r",
@@ -22,7 +22,7 @@
       "executable": "dotnet",
       "arguments": [
         "publish",
-        "ReviewedImageSlideshow.csproj",
+        "ImageSlideshow.csproj",
         "-c",
         "Release",
         "-r",
@@ -39,7 +39,7 @@
       "executable": "dotnet",
       "arguments": [
         "publish",
-        "ReviewedImageSlideshow.csproj",
+        "ImageSlideshow.csproj",
         "-c",
         "Release",
         "-r",
