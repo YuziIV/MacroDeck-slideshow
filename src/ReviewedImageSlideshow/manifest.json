@@ -1,10 +1,10 @@
 {
   "$schema": "https://schemas.macro-deck.app/plugin-manifest-v1.schema.json",
   "manifestVersion": 1,
-  "id": "com.yuziiv.slideshow",
+  "id": "com.yussefabdelwahab.image-slideshow",
   "name": "Slideshow",
-  "version": "1.0.0",
-  "description": "Displays images from a chosen folder on a Macro Deck button, changing every 10 seconds or on press.",
+  "version": "1.0.1",
+  "description": "Displays images from a chosen folder on a Macro Deck button, changing at a configured interval or on press.",
   "icon": "Assets/icon.svg",
   "entrypoints": {
     "win-x64": {
