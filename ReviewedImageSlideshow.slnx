@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/solution/">
+    <File Path="AGENTS.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/ReviewedImageSlideshow/ReviewedImageSlideshow.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ReviewedImageSlideshow.Tests/ReviewedImageSlideshow.Tests.csproj" />
+  </Folder>
+</Solution>

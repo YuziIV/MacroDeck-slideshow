@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.macro-deck.app/plugin-manifest-v1.schema.json",
+  "manifestVersion": 1,
+  "id": "com.yuziiv.slideshow",
+  "name": "Slideshow",
+  "version": "1.0.0",
+  "description": "Displays images from a chosen folder on a Macro Deck button, changing every 10 seconds or on press.",
+  "icon": "Assets/icon.svg",
+  "entrypoints": {
+    "win-x64": {
+      "executable": "runtimes/win-x64/ReviewedImageSlideshow.dll",
+      "runtime": {
+        "kind": "FrameworkDependent",
+        "dotnetVersion": "10.0"
+      }
+    },
+    "osx-arm64": {
+      "executable": "runtimes/osx-arm64/ReviewedImageSlideshow.dll",
+      "runtime": {
+        "kind": "FrameworkDependent",
+        "dotnetVersion": "10.0"
+      }
+    },
+    "linux-x64": {
+      "executable": "runtimes/linux-x64/ReviewedImageSlideshow.dll",
+      "runtime": {
+        "kind": "FrameworkDependent",
+        "dotnetVersion": "10.0"
+      }
+    }
+  },
+  "publisher": {
+    "name": "Yussef Abdel-Wahab"
+  },
+  "repository": "https://github.com/YuziIV/MacroDeck-slideshow",
+  "ai": {
+    "interaction": false,
+    "generatedContent": false,
+    "generatedAssets": true
+  },
+  "license": "MIT",
+  "compatibility": {
+    "macroDeck": ">=3.0.0-0"
+  }
+}
